@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Million Challenge (FANS) — Your first million</title>
+  <meta name="description" content="The Million Challenge (FANS) — Gana coronas creando contenido atrevido. Solo 500 creadores seleccionados. Genera fans, gana coronas y alcanza tu primer millón." />
+  <meta name="keywords" content="million challenge, fans, creadores, coronas, contenido, concurso, primer millón, votaciones" />
+  <meta name="theme-color" content="#0b0b0b" />
+
+  <style>
+    /* Reset / base */
+    :root{
+      --black:#0b0b0b;
+      --gold:#D4AF37;
+      --gold-dark:#b78f2b;
+      --muted:#bdbdbd;
+      --glass: rgba(255,255,255,0.03);
+      --card: rgba(255,255,255,0.02);
+      --accent: #111;
+      --max-width: 1200px;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: linear-gradient(180deg,#050505 0%, #0b0b0b 50%, #0f0f0f 100%);
+      color:#f6f6f6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+
+    /* Logo + Nav */
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(11,11,11,0.85), rgba(11,11,11,0.55));
+      backdrop-filter: blur(6px);
+      padding:10px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .logo {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--gold);
+      font-weight:700;
+      letter-spacing:1px;
+    }
+    .logo svg{display:block}
+    nav{
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    nav a{
+      color:#e6e6e6;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:8px;
+      font-weight:600;
+      transition: all .18s ease;
+      font-size:14px;
+    }
+    nav a:hover{transform:translateY(-3px); color:var(--gold)}
+    .menu-toggle {display:none; background:transparent; border:0; color:var(--gold); font-size:20px}
+
+    /* Hero */
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:140px 20px 80px;
+      position:relative;
+      overflow:hidden;
+    }
+    /* Luxury background: layered gradients + inline SVG decorative money/spotlight shapes */
+    .hero::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(600px 300px at 10% 20%, rgba(212,175,55,0.06), transparent 10%),
+        radial-gradient(400px 220px at 90% 80%, rgba(212,175,55,0.04), transparent 10%),
+        linear-gradient(180deg, rgba(15,15,15,0.85), rgba(2,2,2,0.8));
+      pointer-events:none;
+      z-index:0;
+    }
+    .hero::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.02), transparent 25%);
+      mix-blend-mode: overlay;
+      z-index:1;
+      pointer-events:none;
+    }
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      max-width:980px;
+      width:100%;
+      margin:0 auto;
+      padding:40px;
+      border-radius:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .eyebrow{
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:1px;
+      margin-bottom:12px;
+    }
+    h1{
+      font-size: clamp(28px, 5.6vw, 56px);
+      margin:0 0 10px;
+      color:var(--gold);
+      letter-spacing:1px;
+      line-height:1.05;
+    }
+    p.lead{
+      margin:0 auto 22px;
+      max-width:760px;
+      color:#e7e7e7;
+      font-size:clamp(14px,2.2vw,18px);
+    }
+
+    /* CTA gold button with animated shine */
+    .cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 28px;
+      border-radius:12px;
+      font-weight:700;
+      cursor:pointer;
+      border:0;
+      text-decoration:none;
+      transition: transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.55);
+    }
+    .btn:active{transform:scale(.99)}
+    .btn-gold{
+      background: linear-gradient(180deg,var(--gold) 0%, var(--gold-dark) 100%);
+      color:#0b0b0b;
+      font-size:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn-gold::after{
+      content:'';
+      position:absolute;
+      left:-60%;
+      top:0;
+      width:40%;
+      height:100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.06), rgba(255,255,255,0.1));
+      transform: skewX(-18deg);
+      transition: left .6s cubic-bezier(.2,.9,.3,1);
+      pointer-events:none;
+    }
+    .btn-gold:hover::after{left:120%}
+    .btn-gold:hover{transform:translateY(-6px); box-shadow: 0 18px 48px rgba(215,170,48,0.14)}
+
+    .btn-outline-gold{
+      background:transparent;
+      color:#fff;
+      border:2px solid var(--gold);
+      padding:12px 22px;
+      color:var(--gold);
+    }
+
+    /* Sections */
+    section{
+      padding:80px 20px;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+    .section-card{
+      background: var(--card);
+      padding:26px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+    }
+    .small-title{color:var(--muted); font-weight:700; letter-spacing:1px; margin-bottom:8px}
+    h2{color:var(--gold); margin:6px 0 12px}
+    .muted{color:var(--muted)}
+
+    /* How it works */
+    .how-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+    .how-item{
+      padding:18px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .how-item h3{margin:0 0 8px; color:#fff}
+    .how-item p{margin:0; color:var(--muted); font-size:15px}
+
+    /* Videos gallery */
+    .videos-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;
+      margin-top:18px;
+    }
+    .video-card{
+      position:relative;
+      border-radius:12px;
+      overflow:hidden;
+      background:#000;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .video-card iframe,
+    .video-card video{
+      width:100%;
+      height:190px;
+      display:block;
+      border:0;
+    }
+    .video-card .video-caption{
+      padding:12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* Vote section */
+    .vote-hero{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .vote-box{
+      flex:1 1 420px;
+      padding:22px;
+      border-radius:12px;
+      background: linear-gradient(90deg, rgba(212,175,55,0.03), rgba(0,0,0,0.02));
+      border:1px solid rgba(212,175,55,0.08);
+    }
+    .vote-cta{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 320px;
+    }
+
+    /* Footer */
+    footer{
+      padding:40px 20px;
+      text-align:center;
+      background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.06));
+      border-top:1px solid rgba(255,255,255,0.02);
+    }
+    footer p{margin:10px 0 16px; color:var(--muted)}
+    footer .btn{margin:0 auto}
+
+    /* Utilities */
+    .muted-small{color:var(--muted); font-size:14px}
+    .center{display:flex; align-items:center; justify-content:center}
+    .spacer{height:20px}
+
+    /* Responsive / mobile nav */
+    @media (max-width:900px){
+      nav{display:none}
+      .menu-toggle{display:block}
+      header .container{justify-content:space-between}
+      .hero{padding:120px 16px 60px}
+      .hero-inner{padding:26px}
+      .video-card iframe{height:170px}
+    }
+    /* Mobile menu overlay */
+    .mobile-menu{
+      position:fixed;
+      inset:60px 16px auto 16px;
+      z-index:70;
+      background: linear-gradient(180deg, rgba(8,8,8,0.98), rgba(12,12,12,0.95));
+      border-radius:12px;
+      padding:14px;
+      display:none;
+      flex-direction:column;
+      gap:8px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{padding:12px; border-radius:10px; color:#fff; text-decoration:none}
+
+    /* Entry animations */
+    .reveal{opacity:0; transform:translateY(14px); transition: all .7s cubic-bezier(.2,.9,.3,1)}
+    .reveal.visible{opacity:1; transform:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="#home" class="logo" aria-label="The Million Challenge FANS logo">
+        <!-- Inline SVG logo -->
+        <svg width="44" height="44" viewBox="0 0 64 64" fill="none" aria-hidden>
+          <rect width="64" height="64" rx="12" fill="#0b0b0b" stroke="rgba(212,175,55,0.18)"></rect>
+          <path d="M16 44L32 18L48 44H40L32 30L24 44H16Z" fill="#D4AF37"></path>
+        </svg>
+        <div>
+          <div style="font-size:13px; line-height:1;">THE MILLION</div>
+          <div style="font-size:11px; color:#e6e6e6; margin-top:2px;">(FANS)</div>
+        </div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#how">How it works</a>
+        <a href="#videos">Videos</a>
+        <a href="#vote">Vote</a>
+        <a href="#join">Join</a>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-controls="mobileMenu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <div id="mobileMenu" class="mobile-menu" role="menu" aria-hidden="true">
+    <a href="#home">Home</a>
+    <a href="#how">How it works</a>
+    <a href="#videos">Videos</a>
+    <a href="#vote">Vote</a>
+    <a href="#join">Join</a>
+    <a href="https://forms.gle/XXXX" target="_blank" rel="noopener">Apply Now</a>
+  </div>
+
+  <!-- HERO -->
+  <main>
+    <section id="home" class="hero" aria-labelledby="heroTitle">
+      <div class="hero-inner reveal" role="region" aria-label="Portada">
+        <div class="eyebrow">EXCLUSIVE · 500 CREADORES</div>
+        <h1 id="heroTitle">The Million Challenge (FANS)</h1>
+        <p class="lead">Your content. Your audacity. Your first million. Vive la competencia, atrae fans y gana coronas creando contenido fuera de serie. Solo 500 creadores seleccionados.</p>
+
+        <div class="spacer"></div>
+
+        <div class="cta-row">
+          <a class="btn btn-gold" href="https://forms.gle/XXXX" target="_blank" rel="noopener" aria-label="Apply Now — formulario">
+            Apply Now
+          </a>
+
+          <a class="btn btn-outline-gold" href="#how" aria-label="Learn How — ir a cómo funciona">
+            Learn How
+          </a>
+        </div>
+
+        <p style="margin-top:20px; color:var(--muted); font-size:13px;">Entre más fans tengas, más rápido serás millonario. Todos los géneros e identidades son bienvenidos.</p>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" aria-labelledby="howTitle">
+      <div class="section-card reveal">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+          <div style="flex:1 1 420px;">
+            <div class="small-title">CÓMO FUNCIONA</div>
+            <h2 id="howTitle">Gana coronas, atrae fans, alcanza tu primer millón</h2>
+            <p class="muted">Gana coronas creando contenido atrevido y fuera de serie. Solo 500 creadores seleccionados. Todos los géneros e identidades son bienvenidos. Genera fans, gana coronas y alcanza tu primer millón de dólares. Entre más fans tengas, más rápido serás millonario.</p>
+
+            <div style="margin-top:18px;">
+              <a class="btn btn-outline-gold" href="#how" aria-label="Learn How internal">Learn How</a>
+            </div>
+          </div>
+
+          <div style="flex:1 1 340px;">
+            <div class="how-grid">
+              <div class="how-item">
+                <h3>1. Postula</h3>
+                <p>Rellena tu aplicación y sube ejemplos de tu mejor contenido.</p>
+              </div>
+              <div class="how-item">
+                <h3>2. Genera fans</h3>
+                <p>Comparte, conecta y crece tu base de fans en la plataforma.</p>
+              </div>
+              <div class="how-item">
+                <h3>3. Gana coronas</h3>
+                <p>Los creadores con más coronas avanzan y pueden ganar su primer millón.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section id="videos" aria-labelledby="videosTitle">
+      <div class="section-card reveal">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+          <div style="flex:1 1 500px;">
+            <div class="small-title">VIDEOS</div>
+            <h2 id="videosTitle">Mira cómo nuestros creadores alcanzan sus sueños</h2>
+            <p class="muted">Mira cómo nuestros creadores alcanzan sus sueños y prepárate para ser el próximo millonario.</p>
+          </div>
+
+          <div style="flex:0 0 220px" class="center">
+            <a href="#videos" class="btn btn-gold" aria-label="Watch Clips">Watch Clips</a>
+          </div>
+        </div>
+
+        <div class="videos-grid" style="margin-top:18px;">
+          <!-- Video 1 -->
+          <div class="video-card">
+            <!-- YouTube embed — sample public video (YouTube sample ID) -->
+            <iframe src="https://www.youtube.com/embed/M7lc1UVf-VE" title="Motivational clip 1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="video-caption">Creador: Inspiración · Cómo empezó todo</div>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" title="Motivational clip 2" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="video-caption">Creador: Audacia · Generando una comunidad</div>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="video-card">
+            <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" title="Motivational clip 3" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="video-caption">Creador: El camino al primer millón</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOTE / FANS -->
+    <section id="vote" aria-labelledby="voteTitle">
+      <div class="section-card reveal">
+        <div class="vote-hero">
+          <div class="vote-box">
+            <div class="small-title">FANS & VOTACIONES</div>
+            <h2 id="voteTitle">Vota por tus creadores favoritos</h2>
+            <p class="muted">Vota por tus creadores favoritos y acompáñalos en su camino hacia su primer millón de dólares. Cada voto cuenta y cada fan ayuda a construir la comunidad.</p>
+            <div style="margin-top:12px">
+              <ul style="color:var(--muted); padding-left:18px; margin:8px 0">
+                <li>Apoya a creadores que te inspiran</li>
+                <li>Cada voto impulsa coronas</li>
+                <li>Comparte su progreso con la comunidad</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="vote-cta">
+            <a href="https://forms.gle/YYYY" target="_blank" rel="noopener" class="btn btn-gold" aria-label="Vote for Creators">Vote for Creators</a>
+            <a href="#videos" class="btn btn-outline-gold" aria-label="Ver clips">Watch Clips</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN / CTA -->
+    <section id="join" aria-labelledby="joinTitle">
+      <div class="section-card reveal" style="text-align:center;">
+        <div class="small-title">ÚNETE</div>
+        <h2 id="joinTitle">Sé parte de The Million Challenge (FANS)</h2>
+        <p class="muted">Únete al desafío y sé parte de The Million Challenge (FANS). Solo 500 creadores serán seleccionados para ganar su primer millón.</p>
+
+        <div style="margin-top:18px" class="center">
+          <a class="btn btn-outline-gold" href="https://forms.gle/XXXX" target="_blank" rel="noopener" aria-label="Join the Challenge">Join the Challenge</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="max-width:var(--max-width); margin:0 auto;">
+      <p>Únete al desafío y sé parte de The Million Challenge (FANS). Solo 500 creadores serán seleccionados para ganar su primer millón.</p>
+      <a class="btn btn-outline-gold" href="https://forms.gle/XXXX" target="_blank" rel="noopener">Join the Challenge</a>
+      <p style="margin-top:12px;" class="muted-small">© <span id="year"></span> The Million Challenge (FANS). All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Small helper: set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuToggle.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+    });
+
+    // Smooth scrolling for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const href = this.getAttribute('href');
+        // If just "#", skip
+        if(href === '#') return;
+        const target = document.querySelector(href);
+        if(target){
+          e.preventDefault();
+          // close mobile menu if open
+          if(mobileMenu.classList.contains('open')){
+            mobileMenu.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded','false');
+            mobileMenu.setAttribute('aria-hidden','true');
+          }
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - 72,
+            behavior:'smooth'
+          });
+        }
+      });
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {threshold: 0.12});
+    reveals.forEach(r=>io.observe(r));
+
+    // Keyboard accessible focus styles for buttons
+    document.addEventListener('keyup', (e) => {
+      if(e.key === 'Tab') document.body.classList.add('user-tab');
+    });
+
+    // Small accessibility: add skip to content (optional)
+    // (Not visibly rendered, but nice for screen-reader users)
+    const skipLink = document.createElement('a');
+    skipLink.href = '#home';
+    skipLink.textContent = 'Saltar al contenido';
+    skipLink.style.position = 'absolute';
+    skipLink.style.left = '-9999px';
+    skipLink.style.top = 'auto';
+    skipLink.style.width = '1px';
+    skipLink.style.height = '1px';
+    skipLink.style.overflow = 'hidden';
+    document.body.prepend(skipLink);
+    skipLink.addEventListener('focus', () => {
+      skipLink.style.left = '8px';
+      skipLink.style.top = '8px';
+      skipLink.style.width = 'auto';
+      skipLink.style.height = 'auto';
+      skipLink.style.background = '#111';
+      skipLink.style.color = '#fff';
+      skipLink.style.padding = '8px 12px';
+      skipLink.style.zIndex = '9999';
+      skipLink.style.borderRadius = '6px';
+    });
+    skipLink.addEventListener('blur', () => {
+      skipLink.style.left = '-9999px';
+    });
+  </script>
+</body>
+</html>
