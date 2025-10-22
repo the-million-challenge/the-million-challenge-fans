@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fans - The Million Challenge</title>
+  <meta name="description" content="Página de fans de The Million Challenge">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Comunidad de Fans</h1>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="about.html">Sobre</a></li>
+        <li><a href="contact.html">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Bienvenidos</h2>
+      <p>Esta es la página de fans de The Million Challenge.</p>
+      <img src="images/team.jpg" alt="Foto del equipo" width="600" height="400">
+    </section>
+
+    <section>
+      <h2>Últimas noticias</h2>
+      <article>
+        <h3>Próximo evento</h3>
+        <p>Detalles del evento...</p>
+      </article>
+    </section>
+
+    <form id="contact-form" action="/contact" method="post" novalidate>
+      <label for="name">Nombre</label>
+      <input id="name" name="name" type="text" required>
+
+      <label for="email">Correo</label>
+      <input id="email" name="email" type="email" required>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="year"></span> The Million Challenge</p>
+  </footer>
+
+  <script>
+    // Mostrar año actual
+    var y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+
+    // Validación simple del formulario
+    var form = document.getElementById('contact-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        var email = document.getElementById('email');
+        if (email && email.value.indexOf('@') === -1) {
+          e.preventDefault();
+          alert('Introduce un correo válido con @');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
