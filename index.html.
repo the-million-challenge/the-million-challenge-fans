@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Million Challenge Fans</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-storage-compat.js"></script>
+  <!-- Stripe (only for redirect to payment links or client-side use) -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="firebase-config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body class="dark">
+  <header class="topbar">
+    <div class="brand">The Million Challenge Fans</div>
+    <nav>
+      <a id="nav-login" href="#" onclick="showSection('auth')">Entrar / Registrarse</a>
+      <a id="nav-admin" href="admin-panel.html">Panel Admin</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="landing" class="card center">
+      <h1>Bienvenido</h1>
+      <p>Plataforma híbrida: fans, creadores y reality digital.</p>
+      <div class="choice">
+        <button class="btn gold" onclick="startAs('fan')">Soy fan</button>
+        <button class="btn gold-outline" onclick="startAs('creator')">Soy creador</button>
+      </div>
+      <p class="muted">Diseño responsivo - móvil primero (negro y dorado).</p>
+    </section>
+
+    <section id="auth" class="card hidden">
+      <button class="btn back" onclick="showSection('landing')">← Volver</button>
+      <div id="auth-chooser" class="auth-chooser">
+        <button class="btn" onclick="showSignUp('fan')">Soy fan - Registrarme</button>
+        <button class="btn" onclick="showSignUp('creator')">Soy creador - Registrarme</button>
+        <button class="btn" onclick="showSignIn()">Ya tengo cuenta</button>
+      </div>
+
+      <!-- Sign Up Fan -->
+      <form id="signup-fan" class="hidden form" onsubmit="event.preventDefault(); signUpFan()">
+        <h3>Registro - Fan</h3>
+        <input id="fan-name" placeholder="Nombre" required />
+        <input id="fan-email" type="email" placeholder="Correo" required />
+        <input id="fan-password" type="password" placeholder="Contraseña" required minlength="6" />
+        <button class="btn gold" type="submit">Registrarme</button>
+      </form>
+
+      <!-- Sign Up Creator -->
+      <form id="signup-creator" class="hidden form" onsubmit="event.preventDefault(); signUpCreator()">
+        <h3>Registro - Creador (mayores de 18)</h3>
+        <input id="creator-name" placeholder="Nombre real" required />
+        <input id="creator-email" type="email" placeholder="Correo" required />
+        <input id="creator-password" type="password" placeholder="Contraseña" required minlength="6" />
+        <input id="creator-age" type="number" placeholder="Edad (debes tener 18+)" required min="18" />
+        <input id="creator-bank" placeholder="Cuenta bancaria (sólo últimos 4 dig.)" required maxlength="20" />
+        <p class="note">El registro de creadores requiere autorización del administrador. Máximo 500 creadores activos; si se llena, quedarás en lista de espera.</p>
+        <button class="btn gold" type="submit">Solicitar registro</button>
+      </form>
+
+      <!-- Sign In -->
+      <form id="signin" class="hidden form" onsubmit="event.preventDefault(); signIn()">
+        <h3>Entrar</h3>
+        <input id="sign-email" type="email" placeholder="Correo" required />
+        <input id="sign-password" type="password" placeholder="Contraseña" required />
+        <div class="row">
+          <button class="btn gold" type="submit">Entrar</button>
+          <button class="btn" type="button" onclick="showSection('landing')">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="creator-profile" class="card hidden">
+      <button class="btn back" onclick="showSection('landing')">← Salir</button>
+      <div id="creator-area">
+        <header class="profile-head">
+          <div>
+            <h2 id="creator-title"></h2>
+            <p id="creator-sub"></p>
+          </div>
+          <div class="crowns">
+            <div>Coronas: <span id="creator-crowns">0</span></div>
+            <div>Progreso: <progress id="creator-progress" value="0" max="1000000"></progress></div>
+          </div>
+        </header>
+
+        <section class="uploader">
+          <h3>Subir contenido</h3>
+          <input id="file-input" type="file" accept="image/*,video/*" />
+          <textarea id="content-msg" placeholder="Mensaje o descripción"></textarea>
+          <button class="btn gold" onclick="uploadContent()">Subir</button>
+        </section>
+
+        <section class="content-list">
+          <h3>Contenido</h3>
+          <div id="content-grid" class="grid"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="browse-creators" class="card hidden">
+      <button class="btn back" onclick="showSection('landing')">← Volver</button>
+      <h2>Creadores</h2>
+      <div id="creators-list" class="grid"></div>
+    </section>
+
+    <!-- Creator public profile modal -->
+    <div id="modal-profile" class="modal hidden">
+      <div class="modal-body card">
+        <button class="btn back" onclick="closeModal()">Cerrar</button>
+        <h3 id="modal-name"></h3>
+        <p id="modal-desc"></p>
+        <div>Coronas: <strong id="modal-crowns">0</strong></div>
+        <div class="donate">
+          <label>Cantidad de coronas (1 = $1.50 USD):</label>
+          <input id="donate-amount" type="number" min="1" value="1" />
+          <button class="btn gold" id="donate-btn" onclick="buyCrownsModal()">Comprar coronas</button>
+        </div>
+        <h4>Contenido</h4>
+        <div id="modal-content" class="grid"></div>
+      </div>
+    </div>
+
+    <!-- Toasts/alerts -->
+    <div id="toast" class="toast hidden"></div>
+  </main>
+
+  <footer class="footer">
+    <small>© The Million Challenge Fans</small>
+  </footer>
+</body>
+</html>
